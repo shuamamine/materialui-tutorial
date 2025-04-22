@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
-import { Typography, Button, Container, TextField, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from '@mui/material';
+import {
+  Typography,
+  Button,
+  Container,
+  TextField,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  FormLabel,
+  Box,
+} from '@mui/material';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { useNavigate } from 'react-router-dom';
-import { Box } from '@mui/system';
-// import AcUnitIcon from '@mui/icons-material/AcUnit';
 
 export default function Create() {
   const navigate = useNavigate();
@@ -18,63 +27,66 @@ export default function Create() {
     setTitleError(false);
     setDetailsError(false);
 
- if (title === '') {
-      setTitleError(true);
-    }
-    if (details === '') {
-      setDetailsError(true);
-    }
+    if (title === '') setTitleError(true);
+    if (details === '') setDetailsError(true);
+
     if (title && details) {
       fetch('http://localhost:8000/notes', {
         method: 'POST',
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify({ title, details, category })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, details, category }),
       }).then(() => navigate('/'));
     }
   };
+
   return (
-    <>
-      <div>
-        <Container maxWidth="sm">
-          <Typography
-            color="secondary"
-            variant="h5"
-            component="h2"
-            gutterBottom
-          >
-            Create a New Note
-          </Typography>
+    <Container maxWidth="sm">
+      <Typography
+        variant="h6"
+        color="text.secondary"
+        component="h2"
+        gutterBottom
+      >
+        Create a New Note
+      </Typography>
 
-          <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-          <Box sx={{ mt: 2, mb: 2, display: 'block' }}>
-          <TextField
-            onChange={(e) => setTitle(e.target.value)}
-            label="Note Title"
-            variant="outlined"
-            color="secondary"
-            fullWidth
-            required
-            error={titleError}
-          />
-          </Box>
+      <Box
+        component="form"
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit}
+        sx={{ mt: 3 }}
+      >
+        <TextField
+          label="Note Title"
+          variant="outlined"
+          color="secondary"
+          fullWidth
+          required
+          error={titleError}
+          onChange={(e) => setTitle(e.target.value)}
+          sx={{ mb: 3 }}
+        />
 
-          <Box sx={{ mt: 2, mb: 2, display: 'block' }}>
-          <TextField
-            onChange={(e) => setDetails(e.target.value)}
-            label="Details"
-            variant="outlined"
-            color="secondary"
-            multiline
-            rows={4}
-            fullWidth
-            required
-            error={detailsError}
-          />
-          </Box>
+        <TextField
+          label="Details"
+          variant="outlined"
+          color="secondary"
+          multiline
+          rows={4}
+          fullWidth
+          required
+          error={detailsError}
+          onChange={(e) => setDetails(e.target.value)}
+          sx={{ mb: 3 }}
+        />
 
-          <FormControl sx={{ mt: 2, mb: 2, display: 'block' }}>
+        <FormControl sx={{ mb: 3 }}>
           <FormLabel>Note Category</FormLabel>
-          <RadioGroup value={category} onChange={(e) => setCategory(e.target.value)}>
+          <RadioGroup
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
             <FormControlLabel value="money" control={<Radio />} label="Money" />
             <FormControlLabel value="todos" control={<Radio />} label="Todos" />
             <FormControlLabel value="reminders" control={<Radio />} label="Reminders" />
@@ -82,26 +94,15 @@ export default function Create() {
           </RadioGroup>
         </FormControl>
 
-          <Button
-            sx={{
-              fontSize: 20,
-              backgroundColor: "violet",
-              "&:hover": { backgroundColor: "blue" },
-            }}
-            variant="contained"
-            type="submit"
-            endIcon={<KeyboardArrowRightIcon />}
-            onClick={() => {
-              alert("clicked");
-            }}
-          >
-            Submit
-          </Button>
-          </form>
-          {/* <AcUnitIcon />
-  <AcUnitIcon color="secondary" fontSize="large" /> */}
-        </Container>
-      </div>
-    </>
+        <Button
+          type="submit"
+          color="secondary"
+          variant="contained"
+          endIcon={<KeyboardArrowRightIcon />}
+        >
+          Submit
+        </Button>
+      </Box>
+    </Container>
   );
 }
