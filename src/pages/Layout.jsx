@@ -1,15 +1,18 @@
 import React from 'react';
 import {
-  Drawer,
+  AppBar,
+  Toolbar,
   Typography,
+  Drawer,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Box,
+  Box
 } from '@mui/material';
 import { AddCircleOutlineOutlined, SubjectOutlined } from '@mui/icons-material';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { format } from 'date-fns';
 
 const drawerWidth = 240;
 
@@ -32,7 +35,24 @@ export default function Layout({ children }) {
 
   return (
     <Box sx={{ display: 'flex' }}>
-     
+
+      <AppBar
+        position="fixed"
+        elevation={0}
+        color="primary"
+        sx={{
+          width: `calc(100% - ${drawerWidth}px)`,
+          ml: `${drawerWidth}px`,
+        }}
+      >
+        <Toolbar>
+          <Typography sx={{ flexGrow: 1 }}>
+            Today is the {format(new Date(), 'do MMMM Y')}
+          </Typography>
+          <Typography>Mario</Typography>
+        </Toolbar>
+      </AppBar>
+
       <Drawer
         variant="permanent"
         anchor="left"
@@ -49,7 +69,6 @@ export default function Layout({ children }) {
           <Typography variant="h5">Ninja Notes</Typography>
         </Box>
 
-        
         <List>
           {menuItems.map((item) => (
             <ListItem
@@ -57,7 +76,8 @@ export default function Layout({ children }) {
               key={item.text}
               onClick={() => navigate(item.path)}
               sx={{
-                backgroundColor: location.pathname === item.path ? '#f4f4f4' : 'inherit',
+                backgroundColor:
+                  location.pathname === item.path ? '#f4f4f4' : 'inherit',
               }}
             >
               <ListItemIcon>{item.icon}</ListItemIcon>
@@ -67,7 +87,7 @@ export default function Layout({ children }) {
         </List>
       </Drawer>
 
-     
+      {/* Main Content */}
       <Box
         component="main"
         sx={{
@@ -77,6 +97,8 @@ export default function Layout({ children }) {
           width: `calc(100% - ${drawerWidth}px)`,
         }}
       >
+       
+        <Toolbar />
         {children}
       </Box>
     </Box>
